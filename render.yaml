@@ -23,14 +23,14 @@ services:
         sync: false # Set in dashboard later
         
   # Frontend Next.js App
-  - type: web
+  - type: static
     name: atyourdoor-frontend
     env: node
     region: frankfurt
     plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
-    startCommand: npm start
+    publishPath: out
     envVars:
       - key: NODE_ENV
         value: production
@@ -39,11 +39,6 @@ services:
           type: web
           name: atyourdoor-backend
           envVarKey: RENDER_EXTERNAL_URL
-          # Note: Next.js reads this at build time, so API URL might need to be appended with /api
-          # The fromService will get e.g. https://atyourdoor-backend-123.onrender.com, so we need to add /api
-          # However, Render's fromService injects exactly the external URL.
-          # We might need to handle this by appending /api in the frontend code or tweaking it.
-          # Actually, we can define a composite env var in Render dashboard if needed, but for now we'll set it here and adjust API base if needed.
 
 databases:
   # Managed PostgreSQL Database
