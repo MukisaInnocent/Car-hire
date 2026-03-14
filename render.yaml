@@ -23,9 +23,9 @@ services:
         sync: false # Set in dashboard later
         
   # Frontend Next.js App
-  - type: static
+  - type: web
     name: atyourdoor-frontend
-    env: node
+    env: static
     region: frankfurt
     plan: free
     rootDir: frontend
