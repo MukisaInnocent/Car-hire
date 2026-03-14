@@ -18,17 +18,9 @@ services:
       - key: FRONTEND_URL
         value: https://atyourdoor-frontend.onrender.com # Will update this later with the actual frontend URL or custom domain
       - key: JWT_SECRET
-        sync: false # Set this in the Render dashboard!
+        sync: false # Set this in the Render dashboard later for real security!
       - key: ADMIN_EMAIL
-        sync: false # Set in dashboard
-      - key: SMTP_HOST
-        sync: false
-      - key: SMTP_PORT
-        sync: false
-      - key: SMTP_USER
-        sync: false
-      - key: SMTP_PASS
-        sync: false
+        sync: false # Set in dashboard later
         
   # Frontend Next.js App
   - type: web
