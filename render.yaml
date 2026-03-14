@@ -1,0 +1,62 @@
+services:
+  # Backend Node.js API
+  - type: web
+    name: atyourdoor-backend
+    env: node
+    region: frankfurt # Or choose a region closter to your users
+    plan: free # Change if using paid plans
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: atyourdoor-db
+          property: connectionString
+      - key: FRONTEND_URL
+        value: https://atyourdoor-frontend.onrender.com # Will update this later with the actual frontend URL or custom domain
+      - key: JWT_SECRET
+        sync: false # Set this in the Render dashboard!
+      - key: ADMIN_EMAIL
+        sync: false # Set in dashboard
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+        
+  # Frontend Next.js App
+  - type: web
+    name: atyourdoor-frontend
+    env: node
+    region: frankfurt
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: atyourdoor-backend
+          envVarKey: RENDER_EXTERNAL_URL
+          # Note: Next.js reads this at build time, so API URL might need to be appended with /api
+          # The fromService will get e.g. https://atyourdoor-backend-123.onrender.com, so we need to add /api
+          # However, Render's fromService injects exactly the external URL.
+          # We might need to handle this by appending /api in the frontend code or tweaking it.
+          # Actually, we can define a composite env var in Render dashboard if needed, but for now we'll set it here and adjust API base if needed.
+
+databases:
+  # Managed PostgreSQL Database
+  - name: atyourdoor-db
+    databaseName: atyourdoor
+    user: render_admin
+    region: frankfurt
+    plan: free
