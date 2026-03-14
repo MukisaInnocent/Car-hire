@@ -25,12 +25,12 @@ services:
   # Frontend Next.js App
   - type: web
     name: atyourdoor-frontend
-    env: static
+    env: node
     region: frankfurt
     plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishPath: out
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
